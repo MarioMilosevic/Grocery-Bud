@@ -1,7 +1,9 @@
 import Todo from "./Todo";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { success } from "./toasts/succes";
+import { failure } from "./toasts/failure";
 type TodoState = {
   text: string;
   checked: boolean;
@@ -10,31 +12,9 @@ const MainDiv = () => {
   const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
   const [todos, setTodos] = useState([]);
 
-  const success = () => toast.success('Todo added !', {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    })
-
-    const failure = () => toast.error('Todo removed !', {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      })
-
   const updateTodos = (e) => {
     e.preventDefault();
-    success()
+    success();
     setTodos((prev) => {
       return [...prev, todo];
     });
@@ -42,7 +22,7 @@ const MainDiv = () => {
   };
 
   const deleteTodo = (e) => {
-    failure()
+    failure();
     const target = Number(e.target.parentElement.id);
     const filteredArray = todos.filter((el, index) => index !== target);
     setTodos(filteredArray);
@@ -84,9 +64,7 @@ const MainDiv = () => {
           />
         );
       })}
-      <div>
         <ToastContainer />
-      </div>
     </div>
   );
 };
