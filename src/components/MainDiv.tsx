@@ -1,29 +1,31 @@
 import Todo from "./Todo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 type TodoState = {
   text: string;
   checked: boolean;
 };
 const MainDiv = () => {
-  const [inputValue, setInputValue] = useState("");
   const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
   const [todos, setTodos] = useState([]);
 
-  // useEffect(() => {}, [todo]);
-
-  const createTodo = (e) => {
-    const value = e.target.value
-    setInputValue(value)
-    setTodo({ text: value, checked: false });
-  };
 
   const updateTodos = (e) => {
     e.preventDefault();
-    setTodos([...todos, todo]);
-    setTodo({text:'', checked:false})
-    setInputValue("");
+    setTodos((prev) => {
+      return [...prev, todo];
+    });
+    setTodo({ text: "", checked: false });
   };
+
+  const deleteTodo = (e) => {
+    console.dir(e.target.parentElement.id);
+    const target = Number(e.target.parentElement.id)
+    const filteredArray = todos.filter((el, index) => index !== target)
+    setTodos(filteredArray)
+  };
+
+  console.log(todo);
 
   return (
     <div className="bg-white w-[460px] mx-auto pt-8 pb-10 px-8 rounded-md shadow-sm hover:shadow-lg transition duration-300">
@@ -31,9 +33,10 @@ const MainDiv = () => {
       <form className="flex justify-between rounded-lg pb-6">
         <input
           className="bg-slate-100 w-[70%] px-2 text-sm rounded-md"
+          name="inputValue"
           type="text"
-          value={inputValue}
-          onChange={createTodo}
+          value={todo.text}
+          onChange={(e) => setTodo((prev) => ({ ...prev, text: e.target.value }))}
         />
         <button
           className="w-[30%] bg-blue-300 text-white text-sm py-1 rounded-md"
@@ -43,7 +46,15 @@ const MainDiv = () => {
         </button>
       </form>
       {todos.map((todo, index) => {
-        return <Todo text={todo.text} checked={todo.checked} key={index} />;
+        return (
+          <Todo
+            text={todo.text}
+            checked={todo.checked}
+            key={index}
+            id={index}
+            deleteTodo={deleteTodo}
+          />
+        );
       })}
     </div>
   );
