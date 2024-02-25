@@ -1,8 +1,8 @@
-const Todo = ({ text, deleteTodo, id }) => {
+const Todo = ({ text, deleteTodo, id, finishTodo }) => {
   return (
     <article id={id} className="flex justify-between pb-2">
       <div className="flex gap-2">
-        <input type="checkbox" />
+        <input type="checkbox"  onChange={finishTodo}/>
         <p className="text-sm">{text}</p>
       </div>
       <button

@@ -9,7 +9,6 @@ const MainDiv = () => {
   const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
   const [todos, setTodos] = useState([]);
 
-
   const updateTodos = (e) => {
     e.preventDefault();
     setTodos((prev) => {
@@ -19,13 +18,16 @@ const MainDiv = () => {
   };
 
   const deleteTodo = (e) => {
-    console.dir(e.target.parentElement.id);
-    const target = Number(e.target.parentElement.id)
-    const filteredArray = todos.filter((el, index) => index !== target)
-    setTodos(filteredArray)
+    const target = Number(e.target.parentElement.id);
+    const filteredArray = todos.filter((el, index) => index !== target);
+    setTodos(filteredArray);
   };
 
-  console.log(todo);
+  const finishTodo = (e) => { 
+    setTodo((prev) => ({ ...prev, checked: e.target.checked }))
+  }
+
+  console.log(todo)
 
   return (
     <div className="bg-white w-[460px] mx-auto pt-8 pb-10 px-8 rounded-md shadow-sm hover:shadow-lg transition duration-300">
@@ -36,7 +38,9 @@ const MainDiv = () => {
           name="inputValue"
           type="text"
           value={todo.text}
-          onChange={(e) => setTodo((prev) => ({ ...prev, text: e.target.value }))}
+          onChange={(e) =>
+            setTodo((prev) => ({ ...prev, text: e.target.value }))
+          }
         />
         <button
           className="w-[30%] bg-blue-300 text-white text-sm py-1 rounded-md"
@@ -53,6 +57,7 @@ const MainDiv = () => {
             key={index}
             id={index}
             deleteTodo={deleteTodo}
+            finishTodo = {finishTodo}
           />
         );
       })}
