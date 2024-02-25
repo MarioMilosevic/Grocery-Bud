@@ -6,31 +6,33 @@ type TodoState = {
   checked: boolean;
 };
 const MainDiv = () => {
-  const [todo, setTodo] = useState<TodoState>();
+  const [inputValue, setInputValue] = useState("");
+  const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
   const [todos, setTodos] = useState([]);
 
-  useEffect(() => {}, [todo]);
+  // useEffect(() => {}, [todo]);
 
   const createTodo = (e) => {
-    setTodo({ text: e.target.value, checked: false, id:crypto.randomUUID() })
-  }
-  
+    const value = e.target.value
+    setInputValue(value)
+    setTodo({ text: value, checked: false });
+  };
 
   const updateTodos = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setTodos([...todos, todo]);
-    setTodo({})
+    setTodo({text:'', checked:false})
+    setInputValue("");
   };
 
   return (
     <div className="bg-white w-[460px] mx-auto pt-8 pb-10 px-8 rounded-md shadow-sm hover:shadow-lg transition duration-300">
       <h1 className="pb-4 text-2xl text-center">Grocery Bud</h1>
-      <form
-        className="flex justify-between rounded-lg pb-6"
-      >
+      <form className="flex justify-between rounded-lg pb-6">
         <input
           className="bg-slate-100 w-[70%] px-2 text-sm rounded-md"
           type="text"
+          value={inputValue}
           onChange={createTodo}
         />
         <button
@@ -40,8 +42,8 @@ const MainDiv = () => {
           Add Item
         </button>
       </form>
-      {todos.map((todo) => {
-        return <Todo text={todo.text} checked={todo.checked} key={todo.id} />;
+      {todos.map((todo, index) => {
+        return <Todo text={todo.text} checked={todo.checked} key={index} />;
       })}
     </div>
   );

@@ -1,6 +1,6 @@
 const Todo = ({text}) => {
   return (
-    <article className="flex justify-between">
+    <article className="flex justify-between pb-2">
       <div className="flex gap-2">
         <input type="checkbox" />
         <p className="text-sm">{text}</p>
