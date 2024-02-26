@@ -1,8 +1,9 @@
-import MainDiv from "./components/MainDiv";
+import Todos from "./components/Todos";
 function App() {
   return (
     <>
-      <MainDiv />
+      <Todos
+       />
     </>
   );
 }
