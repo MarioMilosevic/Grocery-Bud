@@ -10,7 +10,8 @@ type TodoState = {
   id: string;
 };
 const MainDiv = () => {
-  const data = JSON.parse(localStorage.getItem("todos"));
+  const storedData = localStorage.getItem("todos");
+  const data = storedData ? JSON.parse(storedData) : [];
   const [todo, setTodo] = useState<TodoState>({
     text: "",
     checked: false,
@@ -22,7 +23,7 @@ const MainDiv = () => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  const updateTodos = (e) => {
+  const updateTodos = (e: React.MouseEvent) => {
     e.preventDefault();
     success();
     setTodos((prev: TodoState[]) => {
