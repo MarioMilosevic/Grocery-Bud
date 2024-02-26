@@ -9,20 +9,14 @@ type TodoState = {
   checked: boolean;
 };
 const MainDiv = () => {
+  const data = JSON.parse(localStorage.getItem('todos'))
   const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
-  const [todos, setTodos] = useState([]);
-  console.log(todos);
+  const [todos, setTodos] = useState(data);
 
-  // useEffect(() => {
-  //   localStorage.setItem("todos", JSON.stringify(todos));
-  // }, [todos]);
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
-  // useEffect(() => {
-  //   const data = localStorage.getItem("todos");
-  //   data ? JSON.parse(data) : [];
-  // }, []);
-
-  // localStorage.setItem('todos', todos)
   const updateTodos = (e) => {
     e.preventDefault();
     success();
@@ -31,8 +25,6 @@ const MainDiv = () => {
     });
     setTodo({ text: "", checked: false });
   };
-
-  // console.log(localStorage.getItem('todos'))
 
   const deleteTodo = (e) => {
     failure();
