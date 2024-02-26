@@ -1,6 +1,6 @@
 import Todo from "./Todo";
-import { useState } from "react";
-import { ToastContainer} from "react-toastify";
+import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { success } from "./toasts/succes";
 import { failure } from "./toasts/failure";
@@ -11,7 +11,18 @@ type TodoState = {
 const MainDiv = () => {
   const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
   const [todos, setTodos] = useState([]);
+  console.log(todos);
 
+  // useEffect(() => {
+  //   localStorage.setItem("todos", JSON.stringify(todos));
+  // }, [todos]);
+
+  // useEffect(() => {
+  //   const data = localStorage.getItem("todos");
+  //   data ? JSON.parse(data) : [];
+  // }, []);
+
+  // localStorage.setItem('todos', todos)
   const updateTodos = (e) => {
     e.preventDefault();
     success();
@@ -21,6 +32,8 @@ const MainDiv = () => {
     setTodo({ text: "", checked: false });
   };
 
+  // console.log(localStorage.getItem('todos'))
+
   const deleteTodo = (e) => {
     failure();
     const target = Number(e.target.parentElement.id);
@@ -29,7 +42,12 @@ const MainDiv = () => {
   };
 
   const finishTodo = (e) => {
-    setTodo((prev) => ({ ...prev, checked: e.target.checked }));
+    const target = e.target.closest("article");
+    const id = Number(target.id);
+    const todosItems = todos.map((todo, index) =>
+      index === id ? { ...todo, checked: !todo.checked } : todo
+    );
+    setTodos(todosItems);
   };
 
   return (
@@ -64,7 +82,7 @@ const MainDiv = () => {
           />
         );
       })}
-        <ToastContainer />
+      <ToastContainer />
     </div>
   );
 };
