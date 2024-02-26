@@ -7,10 +7,15 @@ import { failure } from "./toasts/failure";
 type TodoState = {
   text: string;
   checked: boolean;
+  id: string;
 };
 const MainDiv = () => {
-  const data = JSON.parse(localStorage.getItem('todos'))
-  const [todo, setTodo] = useState<TodoState>({ text: "", checked: false });
+  const data = JSON.parse(localStorage.getItem("todos"));
+  const [todo, setTodo] = useState<TodoState>({
+    text: "",
+    checked: false,
+    id: "",
+  });
   const [todos, setTodos] = useState(data);
 
   useEffect(() => {
@@ -20,24 +25,21 @@ const MainDiv = () => {
   const updateTodos = (e) => {
     e.preventDefault();
     success();
-    setTodos((prev) => {
-      return [...prev, todo];
+    setTodos((prev: TodoState[]) => {
+      return [...prev, { ...todo, id: crypto.randomUUID() }];
     });
-    setTodo({ text: "", checked: false });
+    setTodo({ text: "", checked: false, id: "" });
   };
 
-  const deleteTodo = (e) => {
+  const deleteTodo = (id: string) => {
     failure();
-    const target = Number(e.target.parentElement.id);
-    const filteredArray = todos.filter((el, index) => index !== target);
+    const filteredArray = todos.filter((todo: TodoState) => todo.id !== id);
     setTodos(filteredArray);
   };
 
-  const finishTodo = (e) => {
-    const target = e.target.closest("article");
-    const id = Number(target.id);
-    const todosItems = todos.map((todo, index) =>
-      index === id ? { ...todo, checked: !todo.checked } : todo
+  const finishTodo = (id: string) => {
+    const todosItems = todos.map((todo: TodoState) =>
+      todo.id === id ? { ...todo, checked: !todo.checked } : todo
     );
     setTodos(todosItems);
   };
@@ -62,13 +64,13 @@ const MainDiv = () => {
           Add Item
         </button>
       </form>
-      {todos.map((todo, index) => {
+      {todos.map((todo: TodoState) => {
         return (
           <Todo
             text={todo.text}
             checked={todo.checked}
-            key={index}
-            id={index}
+            key={todo.id}
+            id={todo.id}
             deleteTodo={deleteTodo}
             finishTodo={finishTodo}
           />
